@@ -1,0 +1,35 @@
+{
+    "Consoles": {
+        "Nintendo Game Boy / Sega Game Gear": {"width": 160, "height": 144},
+        "Nintendo Game Boy Advance": {"width": 240, "height": 160},
+        "NES / Famicom": {"width": 256, "height": 240},
+        "SNES / Super Famicom": {"width": 256, "height": 224},
+        "Sega Master System": {"width": 256, "height": 192},
+        "Sega Genesis / Mega Drive": {"width": 320, "height": 224}
+    },
+    "Squares": {
+        "8x8": {"width": 8, "height": 8},
+        "16x16": {"width": 16, "height": 16},
+        "32x32": {"width": 32, "height": 32},
+        "64x64": {"width": 64, "height": 64},
+        "128x128": {"width": 128, "height": 128},
+        "256x256": {"width": 256, "height": 256}
+    },
+    "Lospec": {
+        "Lospec Palette Example 25%": {"width": 116, "height": 30},
+        "Lospec Palette Example 50%": {"width": 232, "height": 60},
+        "Lospec Palette Example 100%": {"width": 464, "height": 120}
+    },
+    "4:3": {
+        "80x60": {"width": 80, "height": 60},
+        "160x120": {"width": 160, "height": 120},
+        "240x180": {"width": 240, "height": 180},
+        "320x240": {"width": 320, "height": 240}
+    },
+    "16:9": {
+        "96x54": {"width": 96, "height": 54},
+        "192x108": {"width": 192, "height": 108},
+        "384x216": {"width": 384, "height": 216},
+        "768x432": {"width": 768, "height": 432}
+    }
+}

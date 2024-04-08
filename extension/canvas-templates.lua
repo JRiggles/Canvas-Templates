@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 -- ignore dialogs which are defined with local names for readablity, but may be unused
 ---@diagnostic disable: unused-local
 
+local preferences = {}
 local templatesFilePath = app.fs.userConfigPath .. "extensions/canvas-templates/templates.json"
 
 local function getOS()
@@ -67,6 +68,20 @@ local function toggleCategory(dlg, toggleId, templates)
     end
 end
 
+local function badJSONDlg()
+    local loadErrorDlg = Dialog("Error Reading Template File")
+        :label { text = "There is a problem with your templates.json file." }
+        :newrow()
+        :label { text = "Please ensure the contents of this file are properly formatted!" }
+        :newrow()
+        :label { text = "Attempted to read from:" }
+        :newrow()
+        :label { text = templatesFilePath }
+        :button { text = "OK", hexpand = false }
+        :button { text = 'Open "templates.json"...', onclick = openTemplatesJSON }
+        :show()
+end
+
 local function templateSelectionDialog(templates)
     local dlg = Dialog("Canvas Size Templates")
         -- show dimensions of currently selected template
@@ -79,7 +94,7 @@ local function templateSelectionDialog(templates)
         dlg:check {
             id = category,
             text = category .. ":",
-            selected = true,  -- checked, categories should be visible by default
+            selected = true, -- checked, categories should be visible by default
             hexpand = false,
             onclick = function() toggleCategory(dlg, category, templates) end,
         }
@@ -89,8 +104,14 @@ local function templateSelectionDialog(templates)
         -- get sizes in each category
         for templateName, size in pairs(templateNames) do
             -- get width and height without decimals
-            local wInt = math.floor(size.width)
-            local hInt = math.floor(size.height)
+            local wStatus, wInt = pcall(math.floor, size.width)
+            local hStatus = pcall(math.floor, size.height)
+            print(wStatus, wInt, hStatus, hInt)
+
+            if not wStatus and not hStatus then
+                badJSONDlg()
+                return
+            end
             -- add radio button for each size
             dlg:radio {
                 -- hexpand = false,
@@ -146,16 +167,7 @@ end
 local function main()
     local status, templateData = pcall(loadTemplates)
     if not status then
-        local loadErrorDlg = Dialog("Error Reading Template File")
-            :label { text = "Could not decode templates.json - please ensure the content of this file is properly formatted!" }
-            :newrow()
-            :label { text = "Attempted to read from:" }
-            :newrow()
-            :label { text = templatesFilePath }
-            :button { text = "OK", hexpand = false }
-            :button { text = 'Open "templates.json"...', onclick = openTemplatesJSON }
-            :show()
-        return  -- bail
+        badJSONDlg()
     end
     templateSelectionDialog(templateData)
     app.command.refresh()
@@ -164,9 +176,7 @@ end
 -- Aseprite plugin API stuff...
 ---@diagnostic disable-next-line: lowercase-global
 function init(plugin) -- initialize extension
-    -- if plugin.preferences.count == nil then
-    --     plugin.preferences.count = 0
-    -- end
+    preferences = plugin.preferences
 
     plugin:newCommand {
         id = "openTemplates",

@@ -2,7 +2,7 @@
     "name": "canvas-templates",
     "displayName": "Canvas Templates",
     "description": "Create a new sprite with a predefined width and height",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "author": { "name": "John Riggles",
                 "email": "jriggles@icloud.com",
                 "url": "https://jriggl.es/" },

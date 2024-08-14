@@ -1,12 +1,11 @@
 # Canvas Templates
 
 #### An Aseprite extension
-*current release: v1.0.0*
+*current release: v1.1.0*
 (https://sudo-whoami.itch.io/canvas-templates)*
 
 ## Latest Changes
-- UI updates
-- Templates in each category are now sorted by size
+- You can now rotate the chosen template by 90 degrees (swap its width and height)
 
 ##
 This [Aseprite](https://aseprite.org) extension provides predifined canvas size templates for new Aseprite files. Several template sizes are included for common aspect ratios, game consoles, and more!

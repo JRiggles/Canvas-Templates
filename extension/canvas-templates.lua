@@ -103,7 +103,19 @@ end
 local function templateSelectionDialog(templates)
   local dlg = Dialog("Canvas Size Templates")
   -- show dimensions of currently selected template
-  dlg:label { id = "sizeHint", text = "Template Size: (choose a template)"}
+  dlg:label { id = "sizeHint", text = "Template Size: (choose a template)" }
+  dlg:check {
+    id = "rotate",
+    text = "Rotate 90 degrees?",
+    selected = false,
+    hexpand = false,
+    onclick = function()  -- update sizeHint label (swap WxH values) when toggled
+      dlg:modify {
+        id = "sizeHint",
+        text = dlg.data["sizeHint"]:gsub("(%d+)x(%d+)", "%2x%1")
+      }
+    end
+  }
 
   -- get template categories
   for category, templateNames in pairs(templates) do
@@ -120,7 +132,7 @@ local function templateSelectionDialog(templates)
     }
     -- this separator has an id so it can be hidden by toggleCategory as-needed
     dlg:separator { id = category .. "Separator" }
-    local i = 1
+    local i = 1  -- items-per-row counter
     -- get sizes in each category
     templateNames = sortResolutions(templateNames)
     for templateName, data in pairs(templateNames) do
@@ -138,6 +150,9 @@ local function templateSelectionDialog(templates)
         id = data.name,
         text = data.name,
         onclick = function ()
+          if dlg.data["rotate"] then  -- rotation enabled, swap width and height values
+            wInt, hInt = hInt, wInt
+          end
           dlg:modify {
             id = "sizeHint",
             text = "Template Size: " .. wInt .. "x" .. hInt
@@ -173,7 +188,15 @@ local function templateSelectionDialog(templates)
         for templateName, size in pairs(templateNames) do
           if dlg.data[templateName] then
             -- create a new sprite with the given dimensions
-            app.command.NewFile{ ui = false, width = size.width, height = size.height }
+            local w, h
+            if not dlg.data["rotate"] then
+              w = size.width
+              h = size.height
+            else  -- swap the width and height values
+              w = size.height
+              h = size.width
+            end
+            app.command.NewFile{ ui = false, width = w, height = h }
           end
         end
       end

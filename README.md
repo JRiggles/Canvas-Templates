@@ -1,5 +1,7 @@
 # Canvas Templates
 
+<img src="./screenshots/Canvas Templates.png" />
+
 #### An Aseprite extension
 *current release: v1.1.0*
 (https://sudo-whoami.itch.io/canvas-templates)*
